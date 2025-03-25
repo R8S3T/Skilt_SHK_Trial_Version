@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp } from '@react-navigation/native';
 import { fetchSubchaptersByChapterId, fetchQuizByContentId } from 'src/database/databaseServices';
 import { LearnStackParamList, RootStackParamList } from 'src/types/navigationTypes';
+import { allowedSubchapterIds } from './trialConfig';
 
 // Function to save progress (updated to save subchapterId and currentIndex)
 export const saveProgress = async (
@@ -169,20 +170,25 @@ export const moveToNextSlide = async ({
     }
 };
 
+
 export const unlockNextSubchapter = async (
     currentSubchapterId: number,
     chapterId: number,
     unlockSubchapter: (id: number) => void
-    ) => {
-        const subchapters = await fetchSubchaptersByChapterId(chapterId);
-        const currentIndex = subchapters.findIndex(
+) => {
+    const subchapters = await fetchSubchaptersByChapterId(chapterId);
+    const currentIndex = subchapters.findIndex(
         sub => sub.SubchapterId === currentSubchapterId
-        );
-        if (currentIndex !== -1 && currentIndex < subchapters.length - 1) {
+    );
+    if (currentIndex !== -1 && currentIndex < subchapters.length - 1) {
         const nextSubchapter = subchapters[currentIndex + 1];
-        unlockSubchapter(nextSubchapter.SubchapterId);
+        if (allowedSubchapterIds.includes(nextSubchapter.SubchapterId)) {
+            unlockSubchapter(nextSubchapter.SubchapterId);
+        } else {
+            console.log(`Trial version: Subchapter ${nextSubchapter.SubchapterId} is not allowed.`);
         }
-    };
+    }
+};
 
 export const completeSubchapter = async ({
     subchapterId,
@@ -220,28 +226,31 @@ export const completeSubchapter = async ({
     }
 
         // Case 2: ResumeSection - navigate back to HomeScreen but prepare ResumeSection for next content
-    if (origin === 'ResumeSection') {
-        if (nextSubchapterData) {
-            await saveProgress(
-                'section1',
-                nextSubchapterData.ChapterId,
-                nextSubchapterData.SubchapterId,
-                nextSubchapterData.SubchapterName,
-                0,
-                nextSubchapterData.ImageName
-            );
+        if (origin === 'ResumeSection') {
+            if (nextSubchapterData && allowedSubchapterIds.includes(nextSubchapterData.SubchapterId)) {
+                await saveProgress(
+                    'section1',
+                    nextSubchapterData.ChapterId,
+                    nextSubchapterData.SubchapterId,
+                    nextSubchapterData.SubchapterName,
+                    0,
+                    nextSubchapterData.ImageName
+                );
+            } else {
+                console.log(`Trial version: Next subchapter ${nextSubchapterData ? nextSubchapterData.SubchapterId : 'undefined'} is not allowed.`);
+            }
+
+            navigation.navigate('CongratsScreen', {
+                targetScreen: 'HomeScreen',
+                targetParams: { 
+                    chapterId,
+                    chapterTitle,
+                    origin: 'ResumeSection'
+                },
+            });
+            return;
         }
 
-        navigation.navigate('CongratsScreen', {
-            targetScreen: 'HomeScreen',
-            targetParams: { 
-                chapterId,
-                chapterTitle,
-                origin: 'ResumeSection'
-            },
-        });
-        return;
-    }
     // Case 1: If origin is SearchScreen, navigate to SearchEndScreen
     if (origin === 'SearchScreen') {
         (navigation as unknown as NavigationProp<RootStackParamList>).navigate('SearchEndScreen');

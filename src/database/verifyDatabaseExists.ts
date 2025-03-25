@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 
-const dbPath = `${FileSystem.documentDirectory}SQLite/skiltSHK.db`;
+const dbPath = `${FileSystem.documentDirectory}SQLite/skiltSHKTrial.db`;
 
 export async function verifyDatabaseExists(): Promise<void> {
     try {

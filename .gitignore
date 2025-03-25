@@ -39,4 +39,4 @@ yarn-error.*
 #assets/Images/
 
 # Datenbankdatei ignorieren
-#assets/skiltSHK.db
+#assets/skiltSHKTrial.db

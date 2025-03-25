@@ -93,31 +93,31 @@ const SubchaptersScreen: React.FC<SubchaptersScreenRouteProps> = ({ route }) => 
         loadData();
     }, [chapterId]);
 
-    const handleNodePress = (subchapterId: number, subchapterTitle: string) => {
-        const isFinished = finishedSubchapters.includes(subchapterId);
-        const isLocked = !unlockedSubchapters.includes(subchapterId);
-        const selected = subchapters.find(sub => sub.SubchapterId === subchapterId);
 
-        if (isFinished && selected) {
+    const handleNodePress = (subchapterId: number, subchapterTitle: string) => {
+        const selected = subchapters.find(sub => sub.SubchapterId === subchapterId);
+        const isLocked = !unlockedSubchapters.includes(subchapterId);
+    
+        if (isLocked && selected) {
+            // Gesperrter Inhalt: Modal mit Meldung anzeigen
             setSelectedSubchapter(selected);
             setModalVisible(true);
             setIsJumpAhead(false);
-        } else if (isLocked && selected) {
-            setSelectedSubchapter(selected);
-            setModalVisible(true);
-            setIsJumpAhead(true);
-        } else {
-            setCurrentSubchapter(subchapterId, subchapterTitle);
-            navigation.navigate('SubchapterContentScreen', {
-                subchapterId,
-                subchapterTitle,
-                chapterId,
-                chapterTitle,
-                currentIndex: 0,
-                origin: route.params?.origin || 'AllChaptersSection'
-            });
+            return; // Verhindere Navigation
         }
+        
+        // Bei freigegebenen Inhalten normal navigieren
+        setCurrentSubchapter(subchapterId, subchapterTitle);
+        navigation.navigate('SubchapterContentScreen', {
+            subchapterId,
+            subchapterTitle,
+            chapterId,
+            chapterTitle,
+            currentIndex: 0,
+            origin: route.params?.origin || 'AllChaptersSection'
+        });
     };
+    
 
     const handleReviewLesson = () => {
         if (selectedSubchapter) {
@@ -194,8 +194,9 @@ const SubchaptersScreen: React.FC<SubchaptersScreenRouteProps> = ({ route }) => 
                         visible={modalVisible}
                         onClose={() => setModalVisible(false)}
                         subchapterName={selectedSubchapter.SubchapterName}
-                        onReviewLesson={isJumpAhead ? handleJumpAheadConfirm : handleReviewLesson}
-                        isJumpAhead={isJumpAhead}
+                        message="Dieser Inhalt ist in der kostenlosen Version nicht verfügbar."
+                        onReviewLesson={handleReviewLesson}
+                        isJumpAhead={false}
                         onJumpAheadConfirm={handleJumpAheadConfirm}
                     />
                 )}

@@ -20,7 +20,7 @@ import {
 } from './createTables';
 
 
-const dbPath = path.resolve(__dirname, 'skiltSHK.db');
+const dbPath = path.resolve(__dirname, 'skiltSHKTrial.db');
 
 
 export const initializeDatabase = (): Promise<void> => {

@@ -1,6 +1,7 @@
 // databaseservices.ts client-side
 import { DATABASE_MODE, API_URL } from '@env';
 import { initializeDatabase } from './initializeLocalDatabase';
+import { allowedSubchapterIds } from 'src/utils/trialConfig';
 
 import {
     Chapter,
@@ -90,7 +91,7 @@ export async function fetchSubchaptersByChapterId(chapterId: number): Promise<Su
         if (!db) return [];
         try {
             const result = await db.getAllAsync<Subchapter>(
-                'SELECT * FROM Subchapters WHERE ChapterId = ? ORDER BY SortOrder ASC',
+                'SELECT * FROM Subchapters WHERE ChapterId = ? AND isUnlocked = 1 ORDER BY SortOrder ASC',
                 [chapterId]
             );
             return result;
@@ -117,6 +118,13 @@ export async function fetchSubchaptersByChapterId(chapterId: number): Promise<Su
 
 // Fetch subchapter content by subchapter ID
 export async function fetchSubchapterContentBySubchapterId(subchapterId: number): Promise<(GenericContent | Quiz)[]> {
+
+    // Wenn der Subchapter nicht freigegeben ist, lade keinen Inhalt
+    if (!allowedSubchapterIds.includes(subchapterId)) {
+        console.log(`Subchapter ${subchapterId} is locked in trial version.`);
+        return [];
+    }
+
     if (DATABASE_MODE === 'local') {
         // Fetch from local SQLite database
         const db = await initializeDatabase();
@@ -173,6 +181,7 @@ export async function fetchSubchapterContentBySubchapterId(subchapterId: number)
         }
     }
 }
+
 
 
 // Fetch math chapters

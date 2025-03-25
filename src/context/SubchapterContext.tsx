@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SubchapterContextType } from 'src/types/contextTypes';
 import { unlockNextSubchapter } from 'src/utils/progressUtils';
+import { allowedSubchapterIds } from 'src/utils/trialConfig';
 
 const SubchapterContext = createContext<SubchapterContextType | undefined>(undefined);
 
@@ -20,7 +21,7 @@ export const useSubchapter = (): SubchapterContextType => {
 }
 
 export const SubchapterProvider: React.FC<SubchapterProviderProps> = ({ children }) => {
-    const [unlockedSubchapters, setUnlockedSubchapters] = useState<number[]>([1]);
+    const [unlockedSubchapters, setUnlockedSubchapters] = useState<number[]>(allowedSubchapterIds);
     const [finishedSubchapters, setFinishedSubchapters] = useState<number[]>([]);
     const [currentSubchapterId, setCurrentSubchapterId] = useState<number | null>(null);
     const [currentSubchapterTitle, setCurrentSubchapterTitle] = useState<string>('');

@@ -14,7 +14,7 @@ import {
     ClozeTestOption
 } from '../types/contentTypes';
 
-const dbName = 'skiltSHK.db';
+const dbName = 'skiltSHKTrial.db';
 const dbPath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
 
 export async function initializeDatabase() {
@@ -33,7 +33,7 @@ export async function initializeDatabase() {
             console.log("No existing database found, copying the bundled one...");
 
             // Get the bundled database asset
-            const asset = Asset.fromModule(require('../../assets/skiltSHK.db'));
+            const asset = Asset.fromModule(require('../../assets/skiltSHKTrial.db'));
             await asset.downloadAsync();
 
             // Log bundled database URI (useful for debugging)
@@ -134,7 +134,7 @@ export const fetchSubchaptersByChapterId = async (chapterId: number): Promise<Su
     if (!db) return [];
     try {
         const subchapters = await db.getAllAsync<Subchapter>(
-            'SELECT SubchapterId, ChapterId, SubchapterName, SortOrder, ImageName FROM Subchapters WHERE ChapterId = ? ORDER BY SortOrder ASC',
+            'SELECT SubchapterId, ChapterId, SubchapterName, SortOrder, ImageName FROM Subchapters WHERE ChapterId = ? AND isUnlocked = 1 ORDER BY SortOrder ASC',
             [chapterId]
         );
         return subchapters;
@@ -142,6 +142,7 @@ export const fetchSubchaptersByChapterId = async (chapterId: number): Promise<Su
         return [];
     }
 };
+
 
 // Fetch subchapter content by subchapter id
 export const fetchSubchapterContentBySubchapterId = async (subchapterId: number): Promise<GenericContent[]> => {
