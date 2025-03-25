@@ -1,0 +1,23 @@
+/*HTML form that allows to input data for new chapters. When submitting this form, it sends a request to the Express server, which then calls the addChapter function to insert the data into the database*/
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Chapter</title>
+</head>
+<body>
+    <h1>Add Chapter to Database</h1>
+    <form action="http://192.168.225.38:3000/chapters" method="post">
+        <label for="name">Chapter Name:</label>
+        <input type="text" id="name" name="chapterName" required><br><br>
+        <label for="intro">Chapter Intro:</label>
+        <input type="text" id="intro" name="chapterIntro" required><br><br>
+        <label for="year">Year:</label>
+        <input type="number" id="year" name="year" required><br><br>
+        <button type="submit">Add Chapter</button>
+    </form>
+    
+</body>
+</html>

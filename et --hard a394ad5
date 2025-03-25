@@ -1,0 +1,29 @@
+[33ma394ad5[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;32mcurrentbranch[m[33m)[m Merge branch 'main' into currentbranch
+[33m9358206[m Added scrollability to the MultipleChoice component by wrapping content in a ScrollView Updated styles to handle empty option fields and ensure a better user experience
+[33m809bfb4[m Implement dynamic button state in quiz component Add logic to change button text to "Weiter" after correct answer Disable button after incorrect answer until a new option is selected Update button styles and props to handle dynamic states
+[33m47412a7[m Refactor ContentSlide to navigate to QuizScreen on "Next" button press, implement QuizScreen for quiz display, and update navigation types and stack navigator
+[33mac5adb5[m Quiz working within contentslide
+[33m056f940[m Refactor quiz handling in SubchapterContentScreen by removing Type field from Quiz table, updating SQL schema and server routes for quiz fetching, adjusting frontend logic to handle quizzes based on contentId, and ensuring proper fetching and rendering of quizzes
+[33m4f2116d[m Created quiz and multiple choice tables, connected to database, working on distinguishing quizzes for subchaptercontent and mathsubchaptercontent
+[33m41339ac[m Created separate CongratsScreen components for Learn and Math contexts. Updated LearnStackParamList and MathStackParamList to include their respective CongratsScreen. Implemented MathSubchapterContext to manage the state of subchapters. Updated MathSubchapterProvider and App.tsx to wrap AppNavigator with the necessary providers. Modified MathSubchapterScreen and MathSubchapterContentScreen to use context for managing subchapter states and navigation. Ensured proper navigation and type updates throughout.
+[33m9ff27ef[m Add MathTopicSubchapterScreen, remove MathTopicScreen, update navigation and data fetching for math topics
+[33mff4affc[m Refactor MathTopicContentScreen to display content as slides with navigation. Added currentIndex state and NextButton for slide transitions.
+[33m5195fcf[m Update Expo, add custom type declarations for modules"
+[33mc9cdf16[m Adjust SubchapterContentContext to act as generic function for other screens. Adjust Congratsscreen to act as generic modul for other screens
+[33mc79837f[m Setup data fetching for MathTopic and resolved connectivity issues
+[33mbce5df0[m create generic rows and node components and Fix text rendering issue
+[33mb8a2734[m Add MathTopicScreen with hardcoded nodes
+[33m47539c7[m Implement MathScreen to Database Connection
+[33m7d26b1e[m Refactored ContentSlide component to handle both SubchapterContent and MathTopicContent. Added MathTopicContentScreen to MathStackNavigator. Implemented navigation from MathScreen to MathTopicContentScreen and fixed various navigation issues.
+[33mb74667e[m Implement MathTopicContentScreen with dynamic content fetching and display
+[33m31c1ab9[m Updated SubchapterNode to display play icon in gray and finished icons in orange. Ensured the next subchapter unlocks only after pressing the "Weiter" button in CongratsScreen. Managed to show the correct ok icon for finished subchapters and the play icon for the next subchapter.
+[33m8b313ef[m Update navigation and content handling. Ensure navigation types include necessary parameters. Pass chapterId and chapterTitle correctly. Handle empty content data. Verify database content. Create CongratsScreen.
+[33mbfc8c77[m Adjust SubchapterContent to fetch data from database
+[33mb7a66d5[m Created tables for subchapters and subchapter content, implemented SubchapterContentScreen, set up server routes for fetching and adding subchapters, and ensured proper navigation between screens
+[33mb0d596f[m Create MathScreen and add to MathStackNavigator
+[33mcee26c2[m Add math module container with swiper function
+[33m7624fda[m Adjust styles in HomeScreen, add LearnTrackerSection
+[33m0eb0515[m Implemented backend for real-time data transfer from DB to frontend, created SubchaptersScreen
+[33madc7d3c[m Implement navigation between YearsScreen and ChaptersScreen using React Navigation. Update ChaptersScreen to use FlatList and enhance UI styling. Simplify data model by removing ChapterIntro and ChapterId. Adjust ChaptersScreen to display chapter titles with updated styles.
+[33m29f8115[m Refactored the project to improve navigation and type safety
+[33mf7b55e8[m Created a new Expo app
