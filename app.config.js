@@ -3,7 +3,7 @@ import 'dotenv/config'; // Load environment variables from .env file
 export default {
   expo: {
     name: "Skilt_SHK_Trial_Version",
-    slug: "skilt_shk_trial_version",
+    slug: "Skilt_SHK",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
