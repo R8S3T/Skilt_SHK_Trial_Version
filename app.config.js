@@ -16,10 +16,10 @@ export default {
     ios: {
       supportsTablet: true,
       newArchEnabled: true,
-      bundleIdentifier: "com.skilt.shk",
+      bundleIdentifier: "com.skilt.shk.trial",
     },
     android: {
-      package: "com.skilt.shk",
+      package: "ccom.skilt.shk.trial",
       adaptiveIcon: {
         foregroundImage: "./assets/icon.png",
         backgroundColor: "#ffffff"
