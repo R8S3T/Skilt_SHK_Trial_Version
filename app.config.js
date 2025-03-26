@@ -10,7 +10,7 @@ export default {
     userInterfaceStyle: "light",
     splash: {
       image: "./assets/Images/skilt_logo.png",
-      resizeMode: "contain", // native for Android, contain for IOS
+      resizeMode: "native", // native for Android, contain for IOS
       backgroundColor: "#ffffff",
     },
     ios: {

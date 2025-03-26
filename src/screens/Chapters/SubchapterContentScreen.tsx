@@ -156,7 +156,7 @@ const SubchapterContentScreen: React.FC<Props> = ({ route, navigation }) => {
             const progress = (currentIndex + 1) / contentData.length;
             navigation.setOptions({
                 headerTitle: () => (
-                    <View style={{ flexDirection: 'row', alignItems: 'center', width: '90%' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingRight: 10 }}>
                         <View style={styles.progressBarContainer}>
                             <LinearGradient
                                 colors={['#4CAF50', '#81C784']}

@@ -1,7 +1,9 @@
 import { SubchapterWithPreview } from "src/types/contentTypes";
+import { allowedSubchapterIds } from "./trialConfig";
 
 export interface SubchapterWithPreviewExtended extends SubchapterWithPreview {
-    cleanedPreview: string[]; // Updated to handle highlighted parts as an array
+    cleanedPreview: string[];
+    locked: boolean;
 }
 
 const cleanContent = (content: string): string => {
@@ -57,8 +59,6 @@ export const handleSearch = async (
     query: string,
     searchSubchapters: (query: string) => Promise<SubchapterWithPreview[]>
 ): Promise<SubchapterWithPreviewExtended[]> => {
-
-    // Falls query leer oder nur Leerzeichen enthält, keine Suche durchführen
     if (!query.trim()) {
         return [];
     }
@@ -72,8 +72,9 @@ export const handleSearch = async (
 
             return {
                 ...subchapter,
-                relevanceScore: 0, 
-                cleanedPreview: highlightedPreview, 
+                relevanceScore: 0,
+                cleanedPreview: highlightedPreview,
+                locked: !allowedSubchapterIds.includes(subchapter.SubchapterId),
             };
         })
         .sort((a, b) => b.relevanceScore - a.relevanceScore);

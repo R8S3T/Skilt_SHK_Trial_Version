@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity, Modal } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { searchSubchapters } from 'src/database/databaseServices';
@@ -9,11 +9,11 @@ import { handleSearch } from 'src/utils/searchUtils';
 import { useTheme } from 'src/context/ThemeContext';
 import { screenWidth } from 'src/utils/screenDimensions';
 import { Ionicons } from '@expo/vector-icons';
+import SubchapterInfoModal from '../Chapters/SubchapterInfoModal';
 
 const RECENT_SEARCHES_KEY = 'recent_searches';
 const RESULTS_PER_PAGE = 5;
 
-// Erweiterter Vorschlags-Pool
 const suggestionPool = [
   'Membranausdehnungsgefäß',
   'Kundenauftrag',
@@ -38,6 +38,9 @@ const SearchScreen: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const { theme, isDarkMode } = useTheme();
+  // New state for handling locked search result modal:
+  const [modalVisible, setModalVisible] = useState(false);
+  const [lockedItem, setLockedItem] = useState<SubchapterWithPreviewExtended | null>(null);
 
   // Lade persistente "Letzte Suchen" beim Mounten
   useEffect(() => {
@@ -85,11 +88,17 @@ const SearchScreen: React.FC = () => {
     setCurrentPage(0);
   };
 
-  const paginatedResults = results.slice(
+  // Sortiere die Ergebnisse so, dass erst die freigegebenen (unlocked) und dann die gesperrten (locked) angezeigt werden
+  const sortedResults = [...results].sort((a, b) => {
+    if (a.locked === b.locked) return 0;
+    return a.locked ? 1 : -1;
+  });
+
+  const paginatedResults = sortedResults.slice(
     currentPage * RESULTS_PER_PAGE,
     (currentPage + 1) * RESULTS_PER_PAGE
   );
-  const hasNextPage = (currentPage + 1) * RESULTS_PER_PAGE < results.length;
+  const hasNextPage = (currentPage + 1) * RESULTS_PER_PAGE < sortedResults.length;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -109,47 +118,46 @@ const SearchScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-        <View style={styles.headerContainer}>
+      <View style={styles.headerContainer}>
         <View
-            style={[
-                styles.inputContainer,
-                {
-                    borderColor: '#e8630a',
-                    borderWidth: 2,
-                    backgroundColor: isDarkMode ? '#666' : '#fff',
-                },
-            ]}
+          style={[
+            styles.inputContainer,
+            {
+              borderColor: '#e8630a',
+              borderWidth: 2,
+              backgroundColor: isDarkMode ? '#666' : '#fff',
+            },
+          ]}
         >
-            <TextInput
-                value={query}
-                onChangeText={handleQueryChange}
-                onSubmitEditing={handleQuerySubmit}
-                placeholder="Suche..."
-                placeholderTextColor={theme.secondaryText}
-                style={[styles.textInput, { color: theme.primaryText }]}
-            />
-            <View style={styles.iconContainer}>
-                {query.length > 0 && (
-                    <TouchableOpacity onPress={() => setQuery('')}>
-                        <Ionicons
-                            name="close"
-                            size={screenWidth > 600 ? 30 : 26}
-                            color={theme.secondaryText}
-                            style={{ marginRight: 12 }}
-                        />
-                    </TouchableOpacity>
-                )}
-                <TouchableOpacity onPress={handleQuerySubmit}>
-                    <Ionicons
-                        name="search"
-                        size={screenWidth > 600 ? 32 : 28}
-                        color={theme.secondaryText}
-                    />
-                </TouchableOpacity>
-            </View>
+          <TextInput
+            value={query}
+            onChangeText={handleQueryChange}
+            onSubmitEditing={handleQuerySubmit}
+            placeholder="Suche..."
+            placeholderTextColor={theme.secondaryText}
+            style={[styles.textInput, { color: theme.primaryText }]}
+          />
+          <View style={styles.iconContainer}>
+            {query.length > 0 && (
+              <TouchableOpacity onPress={() => setQuery('')}>
+                <Ionicons
+                  name="close"
+                  size={screenWidth > 600 ? 30 : 26}
+                  color={theme.secondaryText}
+                  style={{ marginRight: 12 }}
+                />
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity onPress={handleQuerySubmit}>
+              <Ionicons
+                name="search"
+                size={screenWidth > 600 ? 32 : 28}
+                color={theme.secondaryText}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-
-        </View>
+      </View>
 
       {query.trim().length === 0 ? (
         <View style={styles.suggestionsContainer}>
@@ -182,35 +190,31 @@ const SearchScreen: React.FC = () => {
           keyExtractor={(item) => item.SubchapterId.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Learn', {
-                  screen: 'SubchapterContentScreen',
-                  params: {
-                    subchapterId: item.SubchapterId,
-                    subchapterTitle: item.SubchapterName,
-                    chapterId: item.ChapterId || 0,
-                    chapterTitle: item.ChapterTitle || 'Unknown Chapter',
-                    origin: 'SearchScreen',
-                  },
-                })
-              }
+              // Changed onPress: if item.locked then show modal, else navigate normally
+              onPress={() => {
+                if (item.locked) {
+                  setLockedItem(item);
+                  setModalVisible(true);
+                } else {
+                  navigation.navigate('Learn', {
+                    screen: 'SubchapterContentScreen',
+                    params: {
+                      subchapterId: item.SubchapterId,
+                      subchapterTitle: item.SubchapterName,
+                      chapterId: item.ChapterId || 0,
+                      chapterTitle: item.ChapterTitle || 'Unknown Chapter',
+                      origin: 'SearchScreen',
+                    },
+                  });
+                }
+              }}
+              style={[styles.resultItem, item.locked && styles.lockedItem]}
             >
-              <Text style={[styles.resultTitle, { color: theme.primaryText }]}>
+              <Text style={[styles.resultTitle, item.locked && styles.lockedText]}>
                 {item.SubchapterName}
               </Text>
-              <Text style={[styles.resultPreview, { color: theme.secondaryText }]}>
-                {item.cleanedPreview.map((part, index) =>
-                  query.toLowerCase() === part.toLowerCase() ? (
-                    <Text
-                      key={`highlight-${index}`}
-                      style={{ fontWeight: 'bold', color: '#e8630a' }}
-                    >
-                      {part}
-                    </Text>
-                  ) : (
-                    <Text key={`normal-${index}`}>{part}</Text>
-                  )
-                )}
+              <Text style={[styles.resultPreview, item.locked && styles.lockedText]}>
+                {item.cleanedPreview.join(' ')}
               </Text>
             </TouchableOpacity>
           )}
@@ -250,88 +254,135 @@ const SearchScreen: React.FC = () => {
           }
         />
       )}
+
+      {/* Modal for locked search result */}
+      {modalVisible && lockedItem && (
+        <SubchapterInfoModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          subchapterName={lockedItem.SubchapterName}
+          message="Dieser Inhalt ist in der kostenlosen Version nicht verfügbar."
+          onReviewLesson={() => setModalVisible(false)}
+          isJumpAhead={false}
+          onJumpAheadConfirm={() => setModalVisible(false)}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: screenWidth > 600 ? 32 : 16,
-    },
-    headerContainer: {
-        padding: 16,
-        marginBottom: 16,
-        borderRadius: 5,
-        backgroundColor: 'transparent',
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderRadius: 5,
-        paddingHorizontal: 8,
-    },
-    textInput: {
-        flex: 1,
-        paddingHorizontal: 12,
-        fontSize: screenWidth > 600 ? 24 : 18,
-        height: screenWidth > 600 ? 60 : 50,
-        borderRadius: 8,
-        backgroundColor: 'transparent',
-    },
-    iconContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    suggestionsContainer: {
-        padding: 16,
-    },
-    suggestionsTitle: {
-        fontSize: 20,
-        marginBottom: 16, // Mehr Abstand zwischen Titel und Buttons
-        fontFamily: 'Lato-Bold',
-    },
-    suggestionsRow: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        marginTop: 12, // Mehr Abstand oberhalb der Buttons
-    },
-    suggestionButton: {
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        borderRadius: 8,
-        marginRight: 12, // Mehr horizontaler Abstand
-        marginBottom: 12, // Mehr vertikaler Abstand
-    },
-    suggestionText: {
-        fontSize: 16,
-        fontFamily: 'OpenSans-Regular',
-    },
-    resultTitle: {
-        fontFamily: 'Lato-Bold',
-        fontSize: screenWidth > 600 ? 20 : 18,
-    },
-    resultPreview: {
-        fontFamily: 'OpenSans-Regular',
-        fontSize: screenWidth > 600 ? 18 : 16,
-    },
-    separator: {
-        height: 1,
-        backgroundColor: '#ccc',
-        marginVertical: 20,
-    },
-    paginationContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: screenWidth > 600 ? 26 : 20,
-        paddingVertical: 10,
-    },
-    paginationText: {
-        marginHorizontal: 16,
-        fontSize: screenWidth > 600 ? 20 : 16,
-        fontWeight: '600',
-    },
+  container: {
+    flex: 1,
+    padding: screenWidth > 600 ? 32 : 16,
+  },
+  headerContainer: {
+    padding: 16,
+    marginBottom: 16,
+    borderRadius: 5,
+    backgroundColor: 'transparent',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5,
+    paddingHorizontal: 8,
+  },
+  textInput: {
+    flex: 1,
+    paddingHorizontal: 12,
+    fontSize: screenWidth > 600 ? 24 : 18,
+    height: screenWidth > 600 ? 60 : 50,
+    borderRadius: 8,
+    backgroundColor: 'transparent',
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  suggestionsContainer: {
+    padding: 16,
+  },
+  suggestionsTitle: {
+    fontSize: 20,
+    marginBottom: 16,
+    fontFamily: 'Lato-Bold',
+  },
+  suggestionsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 12,
+  },
+  suggestionButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    marginRight: 12,
+    marginBottom: 12,
+  },
+  suggestionText: {
+    fontSize: 16,
+    fontFamily: 'OpenSans-Regular',
+  },
+  resultItem: {
+    padding: 10,
+    marginVertical: 8,
+    backgroundColor: '#fff',
+  },
+  lockedItem: {
+    backgroundColor: '#eee',
+    borderRadius: 5,
+  },
+  resultTitle: {
+    fontFamily: 'Lato-Bold',
+    fontSize: screenWidth > 600 ? 20 : 18,
+  },
+  resultPreview: {
+    fontFamily: 'OpenSans-Regular',
+    fontSize: screenWidth > 600 ? 18 : 16,
+  },
+  lockedText: {
+    color: '#888', // gray text for locked items
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#ccc',
+    marginVertical: 20,
+  },
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: screenWidth > 600 ? 26 : 20,
+    paddingVertical: 10,
+  },
+  paginationText: {
+    marginHorizontal: 16,
+    fontSize: screenWidth > 600 ? 20 : 16,
+    fontWeight: '600',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  modalButton: {
+    fontSize: 16,
+    color: '#e8630a',
+    fontWeight: 'bold',
+  },
 });
 
 export default SearchScreen;

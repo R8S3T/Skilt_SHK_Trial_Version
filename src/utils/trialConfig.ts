@@ -1,1 +1,1 @@
-export const allowedSubchapterIds = [1, 11, 14, 19, 26, 36, 40, 57, 74, 86, 114, 134, 141, 152, 165];
+export const allowedSubchapterIds = [5, 11, 14, 19, 26, 36, 40, 57, 74, 86, 114, 134, 141, 152, 165];
