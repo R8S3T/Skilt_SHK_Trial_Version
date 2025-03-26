@@ -2,6 +2,7 @@
 import { DATABASE_MODE, API_URL } from '@env';
 import { initializeDatabase } from './initializeLocalDatabase';
 import { allowedSubchapterIds } from 'src/utils/trialConfig';
+import { allowedMathSubchapterIds } from 'src/utils/trialConfig';
 
 import {
     Chapter,
@@ -249,13 +250,18 @@ export async function fetchMathSubchaptersByChapterId(chapterId: number): Promis
 
 // Fetch math subchapter content by subchapter ID
 export async function fetchMathContentBySubchapterId(subchapterId: number): Promise<GenericContent[]> {
-    console.log(`fetchMathContentBySubchapterId wurde für SubchapterId ${subchapterId} aufgerufen.`);
+    console.log(`fetchMathContentBySubchapterId called for SubchapterId ${subchapterId}.`);
+
+    // Wenn der Math-Subchapter nicht erlaubt ist, wird kein Content geladen
+    if (!allowedMathSubchapterIds.includes(subchapterId)) {
+        console.log(`Math Subchapter ${subchapterId} is locked in trial version.`);
+        return [];
+    }
+
     if (DATABASE_MODE === 'local') {
         console.log("Datenbankmodus ist 'local', rufe initializeDatabase() auf...");
-        // Fetch from local SQLite database
         const db = await initializeDatabase();
         console.log("initializeDatabase() wurde in fetchMathContentBySubchapterId ausgeführt.");
-
         if (!db) return [];
         try {
             const result = await db.getAllAsync<GenericContent>(
@@ -269,7 +275,6 @@ export async function fetchMathContentBySubchapterId(subchapterId: number): Prom
         }
     } else {
         console.log("Datenbankmodus ist 'remote', fetch von API.");
-        // Fetch from server
         try {
             const response = await fetch(`${API_URL}/mathsubchaptercontent/${subchapterId}`);
             if (!response.ok) {
@@ -277,7 +282,6 @@ export async function fetchMathContentBySubchapterId(subchapterId: number): Prom
             }
             const mathSubchapterContent: GenericContent[] = await response.json();
             console.log(`API-Daten erfolgreich abgerufen für SubchapterId ${subchapterId}:`, mathSubchapterContent);
-
             return mathSubchapterContent;
         } catch (error) {
             console.error(`Failed to fetch math subchapter content for subchapterId ${subchapterId} from server:`, error);
