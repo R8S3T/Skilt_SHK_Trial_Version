@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     },
     greetingText: {
         fontFamily: 'Lato-Bold',
-        fontSize: screenWidth > 600 ? scaleFontSize(14) : scaleFontSize(16), // Larger for tablets
+        fontSize: screenWidth > 600 ? scaleFontSize(14) : scaleFontSize(16),
         textAlign: 'center',
     },
     upgradeButton: {
