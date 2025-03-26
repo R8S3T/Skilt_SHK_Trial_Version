@@ -128,7 +128,7 @@ Testversion: Calisma stellt Nutzern eine kostenfreie Testversion der Sklit App m
 
 5.1. Calisma bleibt Eigentümer aller Eigentumsrechte. Dies gilt auch für Urheberrechte, Datenbankrechte, Patente, Geschäftsgeheimnisse, Marken und alle anderen geistigen Eigentumsrechte im Zusammenhang mit den Diensten. Dir werden nach einer Bestellung keine Eigentumsrechte an den Diensten verschafft. 
 
-5.2. Die Rechte der von Dir angegebenen Nutzerdaten verbleiben bei Dir. Du gewährst Calisma ein einfaches, nicht übertragbares, unterlizenzierbares, örtlich unbeschränktes Nutzungsrecht, die Nutzerdaten ausschließlich in Verbindung mit der Erbringung der Dienste zu nutzen. Sofern erforderlich kann Calisma Deine Nutzerdaten gemäß der Datenschutzerklärung von […] an Drittanbieter weitergeben.  
+5.2. Die Rechte der von Dir angegebenen Nutzerdaten verbleiben bei Dir. Du gewährst Calisma ein einfaches, nicht übertragbares, unterlizenzierbares, örtlich unbeschränktes Nutzungsrecht, die Nutzerdaten ausschließlich in Verbindung mit der Erbringung der Dienste zu nutzen. Sofern erforderlich kann Calisma Deine Nutzerdaten gemäß der Datenschutzerklärung sowie unter Beachtung der jeweiligen Regelungen der Vertriebsplattformen (z. B. Google Play oder Apple App Store) an Drittanbieter weitergeben. 
 
 
 6. Nutzerpflichten
