@@ -15,8 +15,8 @@ export const slides: Slide[] = [
     {
         key: 'one',
         animation: require('../../assets/Animations/fireworks_animation.json'),
-        title: 'Willkommen bei Skilt',
-        text: 'Skilt ist dein Begleiter in der Ausbildung – ideal für das Lernen unterwegs und zwischendurch!',
+        title: 'Willkommen in der Demoversion von Skilt',
+        text: 'In dieser kostenlosen Version stellen wir ausgewählte Inhalte zur Verfügung. Einen Link zur Vollversion mit allen Inhalten findest du auf dem Startbildschirm.',
         backgroundColor: '#f6f5f5',
     },
     {

@@ -134,7 +134,7 @@ export const fetchSubchaptersByChapterId = async (chapterId: number): Promise<Su
     if (!db) return [];
     try {
         const subchapters = await db.getAllAsync<Subchapter>(
-            'SELECT SubchapterId, ChapterId, SubchapterName, SortOrder, ImageName FROM Subchapters WHERE ChapterId = ? AND isUnlocked = 1 ORDER BY SortOrder ASC',
+            'SELECT SubchapterId, ChapterId, SubchapterName, SortOrder, ImageName FROM Subchapters WHERE ChapterId = ? ORDER BY SortOrder ASC',
             [chapterId]
         );
         return subchapters;
@@ -142,6 +142,7 @@ export const fetchSubchaptersByChapterId = async (chapterId: number): Promise<Su
         return [];
     }
 };
+
 
 
 // Fetch subchapter content by subchapter id
