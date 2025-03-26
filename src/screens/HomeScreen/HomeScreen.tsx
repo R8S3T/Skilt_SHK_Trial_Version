@@ -1,7 +1,7 @@
 // src/screens/HomeScreen.tsx
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { useRoute, RouteProp, useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BottomTabParamList } from 'src/types/navigationTypes';
@@ -10,9 +10,12 @@ import ResumeSection from './ResumeSection';
 import AllChaptersSection from './AllChaptersSection';
 import MathModulSection from './MathModulSection';
 import FlashcardsSection from './FlashCardSection';
+import { Ionicons } from '@expo/vector-icons';
 import { hasMadeProgress } from 'src/utils/onBoardingUtils';
 import { useTheme } from 'src/context/ThemeContext';
 import { screenWidth, scaleFontSize } from 'src/utils/screenDimensions';
+import { Linking } from 'react-native';
+
 
 type HomeRouteProp = RouteProp<BottomTabParamList, 'Home'>;
 
@@ -93,6 +96,14 @@ const HomeScreen = () => {
             )}
             <MathModulSection onButtonPress={handleButtonPress} />
             <FlashcardsSection onButtonPress={handleButtonPress} />
+            <TouchableOpacity
+                style={styles.upgradeButton}
+                onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=com.skilt.shk')}
+                >
+                <Ionicons name="diamond-outline" size={32} color="#e8630a" style={styles.upgradeIcon} />
+                <Text style={styles.upgradeText}>Zur Vollversion</Text>
+                </TouchableOpacity>
+
         </ScrollView>
     );
 };
@@ -111,6 +122,30 @@ const styles = StyleSheet.create({
         fontFamily: 'Lato-Bold',
         fontSize: screenWidth > 600 ? scaleFontSize(14) : scaleFontSize(16), // Larger for tablets
         textAlign: 'center',
+    },
+    upgradeButton: {
+        marginTop: 30,
+        marginBottom: 20,
+        paddingVertical: 12,
+        paddingHorizontal: 25,
+        borderColor: '#e8630a',
+        borderWidth: 2,
+        borderRadius: 8,
+        alignSelf: 'center',
+        backgroundColor: 'transparent',
+        width: '90%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    upgradeText: {
+        color: '#e8630a',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    upgradeIcon: {
+        marginRight: 15,
     },
 });
 
