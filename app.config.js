@@ -49,7 +49,7 @@ export default {
     ],
     extra: {
       eas: {
-        projectId: "skilt-shk-demo"
+        projectId: "709c4b4b-3466-4884-be1d-0dabaa12b936"
       },
       DATABASE_MODE: process.env.DATABASE_MODE || "production"
     }
