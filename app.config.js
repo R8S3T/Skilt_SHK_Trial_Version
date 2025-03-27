@@ -2,8 +2,8 @@ import 'dotenv/config'; // Load environment variables from .env file
 
 export default {
   expo: {
-    name: "Skilt_SHK_Trial_Version",
-    slug: "Skilt_SHK",
+    name: "Skilt Demoversion",
+    slug: "skilt-shk-demo",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -19,7 +19,7 @@ export default {
       bundleIdentifier: "com.skilt.shk.trial", // Change for new app project
     },
     android: {
-      package: "ccom.skilt.shk.trial",
+      package: "com.skilt.shk.trial",
       adaptiveIcon: {
         foregroundImage: "./assets/icon.png",// Change for new app project
         backgroundColor: "#ffffff"
