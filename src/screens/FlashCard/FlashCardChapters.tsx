@@ -7,6 +7,7 @@ import { RootStackParamList } from 'src/types/navigationTypes';
 import { useTheme } from 'src/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { scaleFontSize, screenWidth } from "src/utils/screenDimensions";
+import SubchapterInfoModal from '../Chapters/SubchapterInfoModal';
 
 // Main component
 const FlashCardChapters = () => {
@@ -17,7 +18,7 @@ const FlashCardChapters = () => {
     const { theme, isDarkMode } = useTheme();
 
     // Locked chapters 
-    const lockedChapters = new Set([0]);
+    const lockedChapters = new Set([1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
 
     // Calculate button size to fit three per row
     const screenWidth = Dimensions.get('window').width;
@@ -131,21 +132,17 @@ const FlashCardChapters = () => {
             </ScrollView>
 
             {/* Modal for locked chapters */}
-            <Modal
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <View style={[styles.modalOverlay, { backgroundColor: isDarkMode ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.5)' }]}>
-                    <View style={[styles.modalContainer, { backgroundColor: theme.surface }]}>
-                        <Text style={[styles.modalText, { color: theme.primaryText }]}>{modalMessage}</Text>
-                        <TouchableOpacity onPress={() => setModalVisible(false)}>
-                        <Text style={[styles.modalButton, { color: isDarkMode ? '#CCCCCC' : theme.accent }]}>OK</Text>
-
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
+            {modalVisible && (
+                <SubchapterInfoModal
+                    visible={modalVisible}
+                    onClose={() => setModalVisible(false)}
+                    subchapterName="Lernkarten"
+                    message="Diese Lernkarten sind in der Demoversion nicht verfügbar."
+                    isJumpAhead={false}
+                    onReviewLesson={() => setModalVisible(false)}
+                    onJumpAheadConfirm={() => setModalVisible(false)}
+                />
+                )}
         </View>
     );
 };
