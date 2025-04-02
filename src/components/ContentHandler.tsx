@@ -91,22 +91,22 @@ const ContentHandler: React.FC<ContentHandlerProps> = ({ part }) => {
         );
       });
     };
-  
+
     return (
       <View style={styles.bulletTextContainer}>
-        <Text style={[styles.bulletPoint, { color: theme.primaryText }]}>○</Text>
+        <Text style={[styles.bulletPoint, { color: theme.primaryText }]}>●</Text>
         <Text style={[styles.bulletText, { color: theme.primaryText }]}>
           {processNestedMarkers(bulletText)}
         </Text>
       </View>
     );
   }
-  
+
 
   if (part.startsWith('[LF_')) {
     const imageName = part.replace('[', '').replace(']', '').trim();
     const imageSource = imageMap[imageName as keyof typeof imageMap];
-    
+
     if (imageSource) {
       const markers = imageName.split('_').map(marker => marker.toLowerCase());
       let imageStyle = styles.image;
@@ -312,7 +312,7 @@ const styles = StyleSheet.create({
   },
   bulletPoint: {
     width: screenWidth > 600 ? 14 : 10,
-    fontSize: screenWidth > 600 ? 14 : 18,
+    fontSize: screenWidth > 600 ? 16 : 12,
     lineHeight: screenWidth > 600 ? 28 : 24,
     marginRight: 10,
     textAlign: 'center',

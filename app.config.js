@@ -10,18 +10,24 @@ export default {
     userInterfaceStyle: "light",
     splash: {
       image: "./assets/Images/skilt_logo.png",
-      resizeMode: "native", // native for Android, contain for IOS
+      resizeMode: "contain", // native for Android, contain for IOS
       backgroundColor: "#ffffff",
     },
     ios: {
       supportsTablet: true,
       newArchEnabled: true,
-      bundleIdentifier: "com.skilt.shk.trial", // Change for new app project
+      bundleIdentifier: "com.skilt.shk.trial",
+      icon: "./assets/Images/dark_icon.png",
+      "splash": {
+        "image": "./assets/Images/skilt_logo.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff"
+      }
     },
     android: {
       package: "com.skilt.shk.trial",
       adaptiveIcon: {
-        foregroundImage: "./assets/icon.png",// Change for new app project
+        foregroundImage: "./assets/dark_icon.png",
         backgroundColor: "#ffffff"
       },
       permissions: [
