@@ -92,13 +92,10 @@ const PrivacyPolicyScreen: React.FC = () => {
 
                 <Text style={[styles.sectionTitle, { color: theme.primaryText }]}>5. App-Updates</Text>
                 <Text style={[styles.description, { color: theme.primaryText }]}>
-                    Updates für Skilt werden über den Google Play Store bereitgestellt. Diese betreffen ausschließlich die Funktionalität der App und führen nicht zur Erhebung oder Verarbeitung von Daten.
+                    Updates für Skilt werden über den App Store bereitgestellt. Diese betreffen ausschließlich die Funktionalität der App und führen nicht zur Erhebung oder Verarbeitung von Daten.
                 </Text>
                 <Text style={[styles.description, { color: theme.primaryText }]}>
-                    Bitte beachte, dass der Google Play Store eigene Datenschutzbestimmungen hat, die unabhängig von Skilt gelten. Informationen dazu findest du in den Datenschutzhinweisen von Google:
-                </Text>
-                <Text style={[styles.description, { color: theme.primaryText, textDecorationLine: 'underline' }]}>
-                    https://policies.google.com/privacy
+                    Bitte beachte, dass der App Store eigene Datenschutzbestimmungen hat, die unabhängig von Skilt gelten. Informationen dazu findest du in den Datenschutzhinweisen von deinem Appstore.
                 </Text>
                 <View style={{ height: 40 }} />
             </ScrollView>
