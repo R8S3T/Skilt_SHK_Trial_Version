@@ -10,7 +10,8 @@
     "paths": {
       "src/*": ["src/*"]
     },
-    "noEmit": true,
+    "noEmit": false,
+    "outDir": "./dist", 
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types", "./@types"]
   },
