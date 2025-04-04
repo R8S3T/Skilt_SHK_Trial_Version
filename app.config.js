@@ -17,7 +17,7 @@ export default {
       supportsTablet: true,
       newArchEnabled: true,
       bundleIdentifier: "com.skilt.shk.trial",
-      icon: "./assets/Images/dark_icon.png",
+      icon: "./assets/dark_icon.png",
       "splash": {
         "image": "./assets/Images/skilt_logo.png",
         "resizeMode": "contain",
