@@ -102,33 +102,38 @@ const MathSubchapterScreen: React.FC<Props> = ({ route, navigation }) => {
 
     const handleNodePress = async (subchapterId: number, subchapterTitle: string) => {
         // Prüfe, ob der Math-Subchapter erlaubt ist
-        if (!allowedMathSubchapterIds.includes(subchapterId)) {
-            const selected = subchapters.find(sub => sub.SubchapterId === subchapterId);
-            if (selected) {
-                setSelectedSubchapter(selected);
-                setModalVisible(true);
-            }
-            return; // Navigation verhindern
+        const isLocked = !allowedMathSubchapterIds.includes(subchapterId);
+        const selected = subchapters.find(sub => sub.SubchapterId === subchapterId);
+
+        if (selected) {
+            setSelectedSubchapter(selected);
+            setModalVisible(true);
+
+            // Zeige das Modal, wenn das Kapitel gesperrt ist
+            if (isLocked) {
+                return; // Navigation verhindern
             }
 
             // Falls erlaubt, normale Navigation:
             setCurrentSubchapter(subchapterId, subchapterTitle);
             try {
-            const content = await fetchMathContentBySubchapterId(subchapterId);
-            const quizzes = content.length > 0 ? await fetchMathMiniQuizByContentId(content[0].ContentId) : [];
-            navigation.navigate('MathSubchapterContentScreen', {
-                subchapterId,
-                subchapterTitle,
-                chapterId,
-                chapterTitle,
-                origin,
-                preloadedContent: content,
-                preloadedQuiz: quizzes[0] || null,
-            });
+                const content = await fetchMathContentBySubchapterId(subchapterId);
+                const quizzes = content.length > 0 ? await fetchMathMiniQuizByContentId(content[0].ContentId) : [];
+                navigation.navigate('MathSubchapterContentScreen', {
+                    subchapterId,
+                    subchapterTitle,
+                    chapterId,
+                    chapterTitle,
+                    origin,
+                    preloadedContent: content,
+                    preloadedQuiz: quizzes[0] || null,
+                });
             } catch (error) {
-            console.error("Error loading math content", error);
+                console.error("Error loading math content", error);
             }
+        }
     };
+
 
     const handleReviewLesson = () => {
         if (selectedSubchapter) {
@@ -196,28 +201,23 @@ const MathSubchapterScreen: React.FC<Props> = ({ route, navigation }) => {
                     )}
                 </ScrollView>
             </View>
-
             {selectedSubchapter && (
-                <SubchapterInfoModal
-                    visible={modalVisible}
-                    onClose={() => setModalVisible(false)}
-                    subchapterName={selectedSubchapter.SubchapterName}
-                    onReviewLesson={isJumpAhead ? handleJumpAheadConfirm : handleReviewLesson}
-                    isJumpAhead={isJumpAhead}
-                    onJumpAheadConfirm={handleJumpAheadConfirm}
-                />
-            )}
-            {modalVisible && selectedSubchapter && (
             <SubchapterInfoModal
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
                 subchapterName={selectedSubchapter.SubchapterName}
-                message="Dieser Inhalt ist in der kostenlosen Version nicht verfügbar."
-                onReviewLesson={() => setModalVisible(false)}
-                isJumpAhead={false}
-                onJumpAheadConfirm={() => setModalVisible(false)}
+                message={
+                    !allowedMathSubchapterIds.includes(selectedSubchapter.SubchapterId)
+                        ? "Dieses Kapitel gehört zur Vollversion. Hol dir die komplette App, um auf alle Inhalte zuzugreifen."
+                        : null
+                }
+                onReviewLesson={isJumpAhead ? handleJumpAheadConfirm : handleReviewLesson}
+                isJumpAhead={isJumpAhead}
+                onJumpAheadConfirm={handleJumpAheadConfirm}
+                showPurchaseButton={!allowedMathSubchapterIds.includes(selectedSubchapter.SubchapterId)}  // Button nur bei gesperrten Inhalten
             />
-            )}
+        )}
+
         </View>
     );
 };

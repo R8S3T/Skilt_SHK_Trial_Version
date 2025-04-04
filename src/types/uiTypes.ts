@@ -6,4 +6,5 @@ export type SubchapterInfoModalProps = {
     isJumpAhead?: boolean;
     onJumpAheadConfirm?: () => void;
     message?: string | null;
+    showPurchaseButton?: boolean;
 };

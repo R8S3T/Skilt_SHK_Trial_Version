@@ -68,7 +68,7 @@ const FlashCardChapters = () => {
             ),
         });
     }, [navigation, theme]);
-    
+
 
     useEffect(() => {
         const getChapters = async () => {
@@ -137,12 +137,13 @@ const FlashCardChapters = () => {
                     visible={modalVisible}
                     onClose={() => setModalVisible(false)}
                     subchapterName="Lernkarten"
-                    message="Diese Lernkarten sind in der Demoversion nicht verfügbar."
+                    message="Diese Lernkarten sind in der Demoversion nicht verfügbar. Hol dir die Vollversion, um auf alle Lernkarten zuzugreifen."
                     isJumpAhead={false}
                     onReviewLesson={() => setModalVisible(false)}
                     onJumpAheadConfirm={() => setModalVisible(false)}
+                    showPurchaseButton={true}  // Button anzeigen
                 />
-                )}
+            )}
         </View>
     );
 };

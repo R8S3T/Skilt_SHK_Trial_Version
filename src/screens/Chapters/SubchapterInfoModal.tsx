@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity, TouchableWithoutFeedback, Animated } from 'react-native';
+import { View, Text, StyleSheet, Modal, TouchableOpacity, TouchableWithoutFeedback, Animated, Linking } from 'react-native';
 import { SubchapterInfoModalProps } from 'src/types/uiTypes';
 import { scaleFontSize, screenWidth } from 'src/utils/screenDimensions';
+import { Ionicons } from '@expo/vector-icons';
 
 const SubchapterInfoModal: React.FC<SubchapterInfoModalProps> = ({
     visible,
@@ -11,6 +12,7 @@ const SubchapterInfoModal: React.FC<SubchapterInfoModalProps> = ({
     isJumpAhead = false,
     onJumpAheadConfirm,
     message,
+    showPurchaseButton, // Prop hinzufügen
 }) => {
     const opacity = useRef(new Animated.Value(0)).current;
 
@@ -47,6 +49,19 @@ const SubchapterInfoModal: React.FC<SubchapterInfoModalProps> = ({
                                     ? `Möchtest du mit ${subchapterName} weitermachen?`
                                     : 'Du hast diese Lektion abgeschlossen. Möchtest du sie wiederholen?')}
                             </Text>
+
+                            {/* Kauf-Button anzeigen, wenn aktiviert */}
+                            {showPurchaseButton && (
+                                <TouchableOpacity
+                                    style={styles.upgradeButtonSmall}
+                                    onPress={() => Linking.openURL('https://apps.apple.com/de/app/id6743942886')}
+                                >
+                                    <Ionicons name="diamond-outline" size={20} color="#e8630a" style={styles.upgradeIconSmall} />
+                                    <Text style={styles.upgradeTextSmall}>Zur Vollversion</Text>
+                                </TouchableOpacity>
+                            )}
+
+                            {/* Wiederholen- oder Weiter-Button */}
                             {!message && (
                                 <TouchableOpacity
                                     style={styles.button}
@@ -64,7 +79,6 @@ const SubchapterInfoModal: React.FC<SubchapterInfoModalProps> = ({
         </Modal>
     );
 };
-
 
 const styles = StyleSheet.create({
     fullScreen: {
@@ -112,6 +126,34 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: screenWidth > 600 ? 22 : 18,
+    },
+    purchaseButton: {
+        backgroundColor: '#e8630a',
+        marginVertical: 10,
+    },
+    upgradeButtonSmall: {
+        marginTop: 10,
+        marginBottom: 0,
+        paddingVertical: 6,
+        paddingHorizontal: 15,
+        borderColor: '#e8630a',
+        borderWidth: 2,
+        borderRadius: 8,
+        alignSelf: 'center',
+        backgroundColor: 'transparent',
+        width: '70%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    upgradeTextSmall: {
+        color: '#e8630a',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    upgradeIconSmall: {
+        marginRight: 8,
     },
 });
 

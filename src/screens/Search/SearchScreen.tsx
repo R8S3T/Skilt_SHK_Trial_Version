@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, TextInput, FlatList, StyleSheet, TouchableOpacity, Modal, Linking, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { searchSubchapters } from 'src/database/databaseServices';
@@ -256,17 +256,19 @@ const SearchScreen: React.FC = () => {
       )}
 
       {/* Modal for locked search result */}
-      {modalVisible && lockedItem && (
-        <SubchapterInfoModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          subchapterName={lockedItem.SubchapterName}
-          message="Dieser Inhalt ist in der kostenlosen Version nicht verfügbar."
-          onReviewLesson={() => setModalVisible(false)}
-          isJumpAhead={false}
-          onJumpAheadConfirm={() => setModalVisible(false)}
-        />
-      )}
+{/* Modal for locked search result */}
+{modalVisible && lockedItem && (
+    <SubchapterInfoModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        subchapterName={lockedItem?.SubchapterName || "Kapitel"}
+        message="Dieses Kapitel gehört zur Vollversion. Hol dir die komplette App, um auf alle Inhalte zuzugreifen."
+        onReviewLesson={() => setModalVisible(false)}
+        isJumpAhead={false}
+        showPurchaseButton={true}  // Button anzeigen
+    />
+)}
+
     </View>
   );
 };

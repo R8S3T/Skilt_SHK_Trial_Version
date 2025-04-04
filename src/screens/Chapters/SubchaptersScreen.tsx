@@ -97,7 +97,7 @@ const SubchaptersScreen: React.FC<SubchaptersScreenRouteProps> = ({ route }) => 
     const handleNodePress = (subchapterId: number, subchapterTitle: string) => {
         const selected = subchapters.find(sub => sub.SubchapterId === subchapterId);
         const isLocked = !unlockedSubchapters.includes(subchapterId);
-    
+
         if (isLocked && selected) {
             // Gesperrter Inhalt: Modal mit Meldung anzeigen
             setSelectedSubchapter(selected);
@@ -105,7 +105,7 @@ const SubchaptersScreen: React.FC<SubchaptersScreenRouteProps> = ({ route }) => 
             setIsJumpAhead(false);
             return; // Verhindere Navigation
         }
-        
+
         // Bei freigegebenen Inhalten normal navigieren
         setCurrentSubchapter(subchapterId, subchapterTitle);
         navigation.navigate('SubchapterContentScreen', {
@@ -117,7 +117,6 @@ const SubchaptersScreen: React.FC<SubchaptersScreenRouteProps> = ({ route }) => 
             origin: route.params?.origin || 'AllChaptersSection'
         });
     };
-    
 
     const handleReviewLesson = () => {
         if (selectedSubchapter) {
@@ -194,12 +193,14 @@ const SubchaptersScreen: React.FC<SubchaptersScreenRouteProps> = ({ route }) => 
                         visible={modalVisible}
                         onClose={() => setModalVisible(false)}
                         subchapterName={selectedSubchapter.SubchapterName}
-                        message="Dieser Inhalt ist in der kostenlosen Version nicht verfügbar."
+                        message="Dieses Kapitel gehört zur Vollversion. Hol dir die komplette App, um auf alle Inhalte zuzugreifen."
                         onReviewLesson={handleReviewLesson}
                         isJumpAhead={false}
                         onJumpAheadConfirm={handleJumpAheadConfirm}
+                        showPurchaseButton={true}  // Button anzeigen
                     />
                 )}
+
             </ScrollView>
         </View>
     );
