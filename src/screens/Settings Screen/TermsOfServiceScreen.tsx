@@ -91,7 +91,7 @@ const TermsOfServiceScreen: React.FC = () => {
 🔹 Offline-Nutzung: Alle Inhalte sind jederzeit auch ohne Internetverbindung verfügbar.
 🔹 Fortschrittsanzeige: Kapitelweise Bearbeitung und Nachverfolgung des Lernfortschritts.
 
-Testversion: Calisma stellt Nutzern eine kostenfreie Testversion der Sklit App mit eingeschränktem Funktionsumfang zur Verfügung. Diese Testversion dient ausschließlich der Erprobung und dem Kennenlernen der Lerninhalte und Funktionen. Ein vollständiger Zugang zu sämtlichen Diensten ist nur nach Erwerb einer kostenpflichtigen Lizenz gemäß Ziffer 2.2 möglich.
+Calisma stellt Nutzern eine kostenfreie Basisversion der Skilt App zur Verfügung, die einen eingeschränkten Funktionsumfang bietet. Diese Version dient dazu, die Lerninhalte und Funktionen der App kennenzulernen. Der vollständige Zugang zu allen Inhalten und Diensten ist nur nach Erwerb einer kostenpflichtigen Lizenz gemäß Ziffer 2.2 möglich.
 
 2.2. Der entsprechende Umfang wird in der Bestellung detailliert aufgeführt (nachfolgend „Dienste“ genannt). Die von Calisma angebotenen Dienste werden nur gegen Zahlung einer Gebühr bereitgestellt. Der Umfang der angebotenen Dienste kann nach eigenem Ermessen durch Calisma und aus triftigen Gründen geändert (insbesondere aus Gründen der Benutzerfreundlichkeit, der technischen Funktionsfähigkeit oder geänderter Nutzerbedürfnisse und Verhaltensweisen) werden. Auch kann der Zugang zu bestimmten Diensten eingestellt werden. Calisma wird Dich innerhalb einer angemessenen Frist vor dem Wirksamwerden der Änderungen informieren und Dich über die zur Verfügung stehenden Rechtsbehelfe sowie der Möglichkeit zur vorzeitigen Beendigung des Vertragsverhältnisses informieren.
 

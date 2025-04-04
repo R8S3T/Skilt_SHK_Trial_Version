@@ -185,7 +185,7 @@ export const unlockNextSubchapter = async (
         if (allowedSubchapterIds.includes(nextSubchapter.SubchapterId)) {
             unlockSubchapter(nextSubchapter.SubchapterId);
         } else {
-            console.log(`Trial version: Subchapter ${nextSubchapter.SubchapterId} is not allowed.`);
+            console.log(`Basis version: Subchapter ${nextSubchapter.SubchapterId} is not allowed.`);
         }
     }
 };
@@ -237,7 +237,7 @@ export const completeSubchapter = async ({
                     nextSubchapterData.ImageName
                 );
             } else {
-                console.log(`Trial version: Next subchapter ${nextSubchapterData ? nextSubchapterData.SubchapterId : 'undefined'} is not allowed.`);
+                console.log(`Basis version: Next subchapter ${nextSubchapterData ? nextSubchapterData.SubchapterId : 'undefined'} is not allowed.`);
             }
 
             navigation.navigate('CongratsScreen', {

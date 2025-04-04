@@ -122,7 +122,6 @@ export async function fetchSubchapterContentBySubchapterId(subchapterId: number)
 
     // Wenn der Subchapter nicht freigegeben ist, lade keinen Inhalt
     if (!allowedSubchapterIds.includes(subchapterId)) {
-        console.log(`Subchapter ${subchapterId} is locked in trial version.`);
         return [];
     }
 
@@ -254,7 +253,6 @@ export async function fetchMathContentBySubchapterId(subchapterId: number): Prom
 
     // Wenn der Math-Subchapter nicht erlaubt ist, wird kein Content geladen
     if (!allowedMathSubchapterIds.includes(subchapterId)) {
-        console.log(`Math Subchapter ${subchapterId} is locked in trial version.`);
         return [];
     }
 

@@ -1,7 +1,7 @@
 // src/components/ResumeSection.tsx
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Linking } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { loadProgress } from 'src/utils/progressUtils';
 import { NavigationProp } from '@react-navigation/native';
@@ -10,6 +10,7 @@ import { imageMap } from 'src/utils/imageMappings';
 import { scaleFontSize, screenWidth } from "src/utils/screenDimensions";
 import { useTheme } from 'src/context/ThemeContext';
 import { LOCKED_CHAPTERS, LOCKED_YEARS } from 'src/utils/lockConfig';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ResumeSectionProps {
     sectionTitle?: string;
@@ -79,10 +80,10 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ sectionTitle = "Lernen fo
         <View style={styles.container}>
             <Text style={[styles.resumeTitle, { color: theme.primaryText }]}>{sectionTitle}</Text>
             <TouchableOpacity
-    style={[
-        styles.newContainer,
-        { borderColor: theme.border } // Only set the border color, no background color
-    ]}
+                style={[
+                    styles.newContainer,
+                    { borderColor: theme.border }  // Nur Randfarbe, kein Hintergrund
+                ]}
                 onPress={handleContinue}
                 disabled={lastSubchapter === null || lastContentId === null}
             >
@@ -94,11 +95,34 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ sectionTitle = "Lernen fo
                     />
                 )}
                 <Text style={[styles.subtitle, { color: theme.secondaryText }]}>
-                    {lastSubchapterName ? <Text style={styles.bold}>{lastSubchapterName}</Text> : "Momentan keine weiteren Inhalte verfügbar. Bitte beachten: Dies ist eine Testversion."}
+                    {lastSubchapterName ? (
+                        <Text style={styles.bold}>{lastSubchapterName}</Text>
+                    ) : (
+                        <>
+                            <Text style={styles.subtitle}>
+                                Momentan keine weiteren Inhalte verfügbar. 
+                            </Text>
+                            <Text style={styles.subtitle}>
+                                Dies ist die kostenlose Basisversion. 
+                            </Text>
+                        </>
+                    )}
                 </Text>
+    
+                {/* Upgrade Button anzeigen, wenn keine weiteren Inhalte */}
+                {lastSubchapter === null && lastContentId === null && (
+                    <TouchableOpacity
+                        style={styles.upgradeButtonSmall}
+                        onPress={() => Linking.openURL('https://apps.apple.com/de/app/id6743942886')}
+                    >
+                        <Ionicons name="diamond-outline" size={20} color="#e8630a" style={styles.upgradeIconSmall} />
+                        <Text style={styles.upgradeTextSmall}>Zur Vollversion</Text>
+                    </TouchableOpacity>
+                )}
             </TouchableOpacity>
         </View>
     );
+    
 };
 
 const styles = StyleSheet.create({
@@ -136,6 +160,33 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 10,
     },
+    upgradeButtonSmall: {
+        marginTop: 10,
+        marginBottom: 10,
+        paddingVertical: 6,
+        paddingHorizontal: 15,
+        borderColor: '#e8630a',
+        borderWidth: 2,
+        borderRadius: 8,
+        alignSelf: 'center',
+        backgroundColor: 'transparent',
+        width: '70%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    
+    upgradeTextSmall: {
+        color: '#e8630a',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    
+    upgradeIconSmall: {
+        marginRight: 8,
+    },
+    
 });
 
 export default ResumeSection;
