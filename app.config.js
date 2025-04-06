@@ -1,8 +1,8 @@
-import 'dotenv/config'; // Load environment variables from .env file
+import 'dotenv/config';
 
 export default {
   expo: {
-    name: "Skilt Demoversion",
+    name: "Skilt_Basic",
     slug: "skilt-shk-demo",
     version: "1.0.0",
     orientation: "portrait",

@@ -193,7 +193,7 @@ const SubchaptersScreen: React.FC<SubchaptersScreenRouteProps> = ({ route }) => 
                         visible={modalVisible}
                         onClose={() => setModalVisible(false)}
                         subchapterName={selectedSubchapter.SubchapterName}
-                        message="Dieses Kapitel gehört zur Vollversion. Hol dir die komplette App, um auf alle Inhalte zuzugreifen."
+                        message={"Dieses Kapitel ist in der Basisversion nicht verfügbar.\nHol dir jetzt alle Inhalte hier:"}
                         onReviewLesson={handleReviewLesson}
                         isJumpAhead={false}
                         onJumpAheadConfirm={handleJumpAheadConfirm}

@@ -18,7 +18,7 @@ const FlashCardChapters = () => {
     const { theme, isDarkMode } = useTheme();
 
     // Locked chapters 
-    const lockedChapters = new Set([1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    const lockedChapters = new Set([ 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
 
     // Calculate button size to fit three per row
     const screenWidth = Dimensions.get('window').width;
@@ -137,7 +137,7 @@ const FlashCardChapters = () => {
                     visible={modalVisible}
                     onClose={() => setModalVisible(false)}
                     subchapterName="Lernkarten"
-                    message="Diese Lernkarten sind in der Demoversion nicht verfügbar. Hol dir die Vollversion, um auf alle Lernkarten zuzugreifen."
+                    message={"Dieses Kapitel ist in der Basisversion nicht verfügbar.\nHol dir jetzt alle Inhalte hier:"}
                     isJumpAhead={false}
                     onReviewLesson={() => setModalVisible(false)}
                     onJumpAheadConfirm={() => setModalVisible(false)}

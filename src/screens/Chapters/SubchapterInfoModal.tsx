@@ -57,7 +57,7 @@ const SubchapterInfoModal: React.FC<SubchapterInfoModalProps> = ({
                                     onPress={() => Linking.openURL('https://apps.apple.com/de/app/id6743942886')}
                                 >
                                     <Ionicons name="diamond-outline" size={20} color="#e8630a" style={styles.upgradeIconSmall} />
-                                    <Text style={styles.upgradeTextSmall}>Zur Vollversion</Text>
+                                    <Text style={styles.upgradeTextSmall}>Alle Inhalte</Text>
                                 </TouchableOpacity>
                             )}
 
@@ -139,12 +139,11 @@ const styles = StyleSheet.create({
         borderColor: '#e8630a',
         borderWidth: 2,
         borderRadius: 8,
-        alignSelf: 'center',
         backgroundColor: 'transparent',
-        width: '70%',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        alignSelf: 'center', 
     },
     upgradeTextSmall: {
         color: '#e8630a',

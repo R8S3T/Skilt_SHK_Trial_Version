@@ -116,7 +116,7 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ sectionTitle = "Lernen fo
                         onPress={() => Linking.openURL('https://apps.apple.com/de/app/id6743942886')}
                     >
                         <Ionicons name="diamond-outline" size={20} color="#e8630a" style={styles.upgradeIconSmall} />
-                        <Text style={styles.upgradeTextSmall}>Zur Vollversion</Text>
+                        <Text style={styles.upgradeTextSmall}>Alle Inhalte</Text>
                     </TouchableOpacity>
                 )}
             </TouchableOpacity>
