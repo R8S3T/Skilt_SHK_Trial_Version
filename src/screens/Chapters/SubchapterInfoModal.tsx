@@ -54,7 +54,7 @@ const SubchapterInfoModal: React.FC<SubchapterInfoModalProps> = ({
                             {showPurchaseButton && (
                                 <TouchableOpacity
                                     style={styles.upgradeButtonSmall}
-                                    onPress={() => Linking.openURL('https://apps.apple.com/de/app/id6743942886')}
+                                    onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=com.skilt.shk')}
                                 >
                                     <Ionicons name="diamond-outline" size={20} color="#e8630a" style={styles.upgradeIconSmall} />
                                     <Text style={styles.upgradeTextSmall}>Alle Inhalte</Text>
