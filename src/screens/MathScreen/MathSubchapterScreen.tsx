@@ -208,7 +208,7 @@ const MathSubchapterScreen: React.FC<Props> = ({ route, navigation }) => {
                 subchapterName={selectedSubchapter.SubchapterName}
                 message={
                     !allowedMathSubchapterIds.includes(selectedSubchapter.SubchapterId)
-                        ? "Dieses Kapitel ist in der Basisversion nicht verfügbar.\nHol dir jetzt alle Inhalte hier:"
+                        ? "Dieses Kapitel ist in der Vollversion verfügbar.\nHol dir jetzt alle Inhalte hier:"
                         : null
                 }
                 onReviewLesson={isJumpAhead ? handleJumpAheadConfirm : handleReviewLesson}

@@ -96,22 +96,22 @@ const HomeScreen = () => {
             )}
             <MathModulSection onButtonPress={handleButtonPress} />
             <FlashcardsSection onButtonPress={handleButtonPress} />
-{/*            <TouchableOpacity
+           <TouchableOpacity
                 style={styles.upgradeButton}
                 onPress={() => Linking.openURL('https://apps.apple.com/de/app/id6743942886')}
             >
                 <Ionicons name="diamond-outline" size={32} color="#e8630a" style={styles.upgradeIcon} />
                 <Text style={styles.upgradeText}>Alle Inhalte</Text>
-            </TouchableOpacity>*/}
+            </TouchableOpacity>
 
             {/* Google Play Store Link (vollständig auskommentiert) */}
-            <TouchableOpacity
+{/*             <TouchableOpacity
                 style={styles.upgradeButton}
                 onPress={() => Linking.openURL('https://play.google.com/store/apps/details?id=com.skilt.shk')}
             >
                 <Ionicons name="diamond-outline" size={32} color="#e8630a" style={styles.upgradeIcon} />
                 <Text style={styles.upgradeText}>Alle Inhalte</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
         </ScrollView>
     );
