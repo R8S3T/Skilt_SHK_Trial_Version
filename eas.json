@@ -11,15 +11,18 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {
+    "production-android": {
       "autoIncrement": true,
       "android": {
         "buildType": "app-bundle",
         "credentialsSource": "remote"
       }
     },
-    "ios": {
-      "image": "latest"
+    "production-ios": {
+      "autoIncrement": true,
+      "ios": {
+        "image": "latest"
+      }
     },
     "simulator": {
       "ios": {
@@ -31,4 +34,5 @@
     "production": {}
   }
 }
+
 
