@@ -18,6 +18,9 @@
         "credentialsSource": "remote"
       }
     },
+    "ios": {
+      "image": "latest"
+    },
     "simulator": {
       "ios": {
         "simulator": true
