@@ -2,16 +2,16 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
+    "module": "esnext",
     "strict": true,
+    "types": ["jest"],
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "baseUrl": "./",
     "paths": {
       "src/*": ["src/*"]
     },
-    "noEmit": false,
-    "outDir": "./dist", 
+    "noEmit": true,
     "allowSyntheticDefaultImports": true,
     "typeRoots": ["./node_modules/@types", "./@types"]
   },

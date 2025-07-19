@@ -51,7 +51,8 @@ export default {
       "assets/*.db"
     ],
     plugins: [
-      "expo-font"
+      "expo-font",
+      "expo-sqlite"
     ],
     extra: {
       eas: {

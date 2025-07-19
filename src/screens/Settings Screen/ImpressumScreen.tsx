@@ -79,12 +79,6 @@ const ImpressumScreen: React.FC = () => {
                     12459 Berlin{'\n'}
                     Kontakt: info@skilt.app
                 </Text>
-
-                <Text style={[styles.sectionTitle, { color: theme.primaryText }]}>Technische Zeichnungen</Text>
-                <Text style={[styles.description, { color: theme.primaryText }]}>
-                    Die technischen Zeichnungen stammen von Florian Broschart.{'\n'}
-                    Kontakt: broschart.florian@gmail.com
-                </Text>
             </ScrollView>
         </View>
     );
