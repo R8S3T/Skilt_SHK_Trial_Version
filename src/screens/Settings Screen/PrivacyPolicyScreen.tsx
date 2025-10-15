@@ -70,7 +70,7 @@ const PrivacyPolicyScreen: React.FC = () => {
             <ScrollView style={styles.scrollView}>
                 <Text style={[styles.sectionTitle, { color: theme.primaryText }]}>1. Kontakt</Text>
                 <Text style={[styles.description, { color: theme.primaryText }]}>
-                    Skilt wird von Calisma betrieben. Bei Fragen zur App oder zum Datenschutz erreichst du uns unter
+                    Skilt wird von Skilt Studio  betrieben. Bei Fragen zur App oder zum Datenschutz erreichst du uns unter
                     <Text> info@skilt.app</Text>. Weitere Infos findest du auf unserer Website: 
                     <Text> www.skilt.app</Text>.
                 </Text>

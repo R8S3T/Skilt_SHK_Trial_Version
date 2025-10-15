@@ -1,7 +1,9 @@
 import { openDatabaseAsync } from 'expo-sqlite';
-import * as FileSystem from 'expo-file-system';
+import { File, Directory, Paths } from 'expo-file-system';
 import { SQLiteDatabase } from 'expo-sqlite';
 import { Asset } from 'expo-asset';
+import updates from '../../assets/data/updatedContent.json';
+import mathUpdates from '../../assets/data/updatedMathContent.json';
 import { 
     Chapter,
     Subchapter,
@@ -15,81 +17,102 @@ import {
 } from '../types/contentTypes';
 
 const dbName = 'skiltSHKTrial.db';
-const dbPath = `${FileSystem.documentDirectory}SQLite/${dbName}`;
+const sqliteDir = new Directory(Paths.document, 'SQLite');
+const dbFile = new File(sqliteDir, dbName);
+
+
+async function applyUpdates(db: SQLiteDatabase) {
+    for (const item of updates) {
+        await db.runAsync(
+            'UPDATE SubchapterContent SET ContentData = ? WHERE ContentId = ?',
+            [item.NewText, item.ContentId]
+        );
+        console.log(`Content ${item.ContentId} aktualisiert.`);
+    }
+}
+
+async function applyMathUpdates(db: SQLiteDatabase) {
+    for (const item of mathUpdates) {
+        await db.runAsync(
+            'UPDATE MathSubchapterContent SET ContentData = ? WHERE ContentId = ?',
+            [item.NewText, item.ContentId]
+        );
+        console.log(`Math-Content ${item.ContentId} aktualisiert.`);
+    }
+}
 
 export async function initializeDatabase() {
-    try {
-        // Ensure the SQLite directory exists
-        const dirInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite');
-        if (!dirInfo.exists) {
-            console.log("SQLite directory does not exist, creating...");
-            await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
-        }
+  console.log("🚀 Init gestartet"); // 1
 
-        // Check if the database file already exists
-        const fileInfo = await FileSystem.getInfoAsync(dbPath);
-
-        if (!fileInfo.exists) {
-            console.log("No existing database found, copying the bundled one...");
-
-            // Get the bundled database asset
-            const asset = Asset.fromModule(require('../../assets/skiltSHKTrial.db'));
-            await asset.downloadAsync();
-
-            // Log bundled database URI (useful for debugging)
-            console.log("Bundled database asset downloaded.");
-
-            // Check bundled database file info (logs existence and size)
-            const bundledFileInfo = await FileSystem.getInfoAsync(asset.localUri!);
-            if (bundledFileInfo.exists) {
-                console.log(`Bundled database exists at ${asset.localUri} with size ${bundledFileInfo.size} bytes.`);
-            } else {
-                throw new Error("Bundled database asset not found.");
-            }
-
-            // Copy the database from bundled assets
-            await FileSystem.copyAsync({
-                from: asset.localUri!,
-                to: dbPath,
-            });
-
-            const copiedFileInfo = await FileSystem.getInfoAsync(dbPath);
-            if (copiedFileInfo.exists) {
-                console.log(`Datenbank erfolgreich nach ${dbPath} kopiert.`);
-            } else {
-                throw new Error("Fehler beim Kopieren der Datenbank.");
-            }
-        } else {
-            
-        }
-    } catch (error) {
-        throw error;
+  try {
+    // SQLite-Ordner vorbereiten
+    const sqliteDir = new Directory(Paths.document, "SQLite");
+    console.log("📁 SQLite-Verzeichnis geprüft"); // 2
+    if (!sqliteDir.exists) {
+      console.log("📁 SQLite-Verzeichnis wird erstellt...");
+      await sqliteDir.create({ intermediates: true });
     }
 
-    return getDatabase();
+    // Dateiobjekt für die DB anlegen
+    const dbFile = new File(sqliteDir, dbName);
+    console.log("📄 DB-Datei-Objekt erstellt"); // 3
+
+    // Prüfen, ob DB existiert
+    if (!dbFile.exists) {
+      console.log("❗ Keine vorhandene DB gefunden, kopiere aus Assets...");
+
+      const asset = Asset.fromModule(require('../../assets/skiltSHKTrial.db'));
+      console.log("📦 Asset geladen");
+      await asset.downloadAsync();
+      console.log("✅ Asset heruntergeladen");
+
+      if (!asset.localUri) {
+        throw new Error("Bundled database asset not found.");
+      }
+
+      // Datei von Assets nach Documents kopieren
+      const sourceFile = new File(asset.localUri);
+      console.log("📄 SourceFile erstellt");
+      await sourceFile.copy(dbFile);
+      console.log(`✅ DB kopiert nach ${dbFile.uri}`);
+    }
+  } catch (error) {
+    console.error("❌ Database init error:", error);
+    throw error;
+  }
+
+  console.log("➡️ initializeDatabase fertig, rufe getDatabase() auf");
+  return getDatabase();
 }
+
 
 
 let dbInstance: SQLiteDatabase | null = null;
 
 export async function getDatabase(): Promise<SQLiteDatabase | null> {
     if (dbInstance) {
-      return dbInstance;
+        return dbInstance;
+        }
+        try {
+        // Prüfen, ob DB-Datei existiert
+        const dbFile = new File(Paths.document, 'SQLite', dbName);
+        if (!dbFile.exists) {
+            await initializeDatabase();
+        }
+
+        // Datenbank öffnen und speichern
+        dbInstance = await openDatabaseAsync(dbName);
+
+        await applyUpdates(dbInstance);
+        await applyMathUpdates(dbInstance);
+
+        return dbInstance;
+        } catch (error) {
+        console.error('❌ Fehler beim Öffnen der DB:', error);
+        return null;
+        }
+
     }
-    try {
-      // Check if the database file exists
-      const fileInfo = await FileSystem.getInfoAsync(dbPath);
-      if (!fileInfo.exists) {
-        // If the file doesn’t exist, call initializeDatabase to copy it over.
-        await initializeDatabase();
-      }
-      // Open and store the database instance.
-      dbInstance = await openDatabaseAsync(dbName);
-      return dbInstance;
-    } catch (error) {
-      return null;
-    }
-  }
 
 
 // Fetch Database Version
@@ -142,8 +165,6 @@ export const fetchSubchaptersByChapterId = async (chapterId: number): Promise<Su
         return [];
     }
 };
-
-
 
 // Fetch subchapter content by subchapter id
 export const fetchSubchapterContentBySubchapterId = async (subchapterId: number): Promise<GenericContent[]> => {

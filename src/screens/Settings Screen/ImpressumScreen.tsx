@@ -69,14 +69,14 @@ const ImpressumScreen: React.FC = () => {
             <ScrollView style={styles.scrollView}>
                 <Text style={[styles.sectionTitle, { color: theme.primaryText }]}>Betreiber</Text>
                 <Text style={[styles.description, { color: theme.primaryText }]}>
-                    Skilt wird von Calisma betrieben.
+                    Skilt wird von Skilt Studio betrieben.
                 </Text>
 
                 <Text style={[styles.sectionTitle, { color: theme.primaryText }]}>Verantwortlich für den Inhalt</Text>
                 <Text style={[styles.description, { color: theme.primaryText }]}>
                     Rebecca Stelter{'\n'}
-                    Wattstr. 8{'\n'}
-                    12459 Berlin{'\n'}
+                    Gubener Str. 36A{'\n'}
+                    03149 Forst (Lausitz){'\n'}
                     Kontakt: info@skilt.app
                 </Text>
             </ScrollView>
