@@ -4,7 +4,7 @@ export default {
   expo: {
     name: "Skilt_Basic",
     slug: "skilt-shk-demo",
-    version: "1.0.3",
+    version: "1.0.6",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -17,6 +17,7 @@ export default {
       supportsTablet: true,
       newArchEnabled: true,
       bundleIdentifier: "com.skilt.shk.trial",
+      buildNumber: "2",
       icon: "./assets/dark_icon.png",
       "splash": {
         "image": "./assets/Images/skilt_logo.png",
